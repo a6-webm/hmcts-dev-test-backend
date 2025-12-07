@@ -18,4 +18,15 @@ public class Task {
     private TaskStatus status;
     private LocalDateTime dueTime;
 
+    public Task(TaskCreateReq taskCreateReq) throws NumberFormatException {
+        this.title = taskCreateReq.getTitle();
+        this.description = taskCreateReq.getDescription();
+        this.status = TaskStatus.UNFINISHED;
+        this.dueTime = LocalDateTime.of(
+                Integer.parseInt(taskCreateReq.getDueTimeYear()),
+                Integer.parseInt(taskCreateReq.getDueTimeMonth()),
+                Integer.parseInt(taskCreateReq.getDueTimeDay()),
+                8, 0
+            );
+    }
 }

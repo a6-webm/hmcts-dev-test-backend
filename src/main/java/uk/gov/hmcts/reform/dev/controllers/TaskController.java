@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.dev.models.Task;
+import uk.gov.hmcts.reform.dev.models.TaskCreateReq;
 import uk.gov.hmcts.reform.dev.models.TaskStatus;
 
 import java.sql.ResultSet;
@@ -48,10 +50,10 @@ public class TaskController {
 
     // I'll be honest I wanted to use a PreparedStatement, but I couldn't think of any unit tests to make if I did,
     // and I assume using @SQL("test_schema.sql") is more of an integration testing thing
-    @GetMapping(value = "/get-example-case", produces = "application/json")
-    public ResponseEntity<Task> getExampleCase() {
+    @PostMapping(path = "/task", produces = "application/json")
+    public ResponseEntity<Task> createTask(@ModelAttribute TaskCreateReq taskCreateReq) throws SQLException {
         try {
-            Task newTask = new Task();
+            Task newTask = new Task(taskCreateReq); // construct the Task here to catch exceptions
             String query = createQuery(
                 newTask.getTitle(), newTask.getDescription(), newTask.getStatus(), newTask.getDueTime()
             );
