@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -16,6 +18,9 @@ class GetWelcomeTest {
 
     @Autowired
     private transient MockMvc mockMvc;
+
+    @MockitoBean // WebMvcTest does not initialise jdbc beans, so fake bean
+    private JdbcTemplate jdbcTemplate;
 
     @DisplayName("Should welcome upon root request with 200 response code")
     @Test
